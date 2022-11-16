@@ -1,0 +1,99 @@
+plugins {
+    id 'application'
+    //id "com.github.johnrengelman.shadow" version "7.1.0" -- currently an issue with shadowing; will return to it later.
+    id "io.freefair.lombok" version "6.4.3"
+    id 'idea'
+    id 'java'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+defaultTasks 'clean', 'build', 'test'
+
+def versions = [
+        dslJson : '1.9.9',
+        netty : '4.1.77.Final',
+        agrona : '1.17.1'
+]
+
+def javaVersion = JavaVersion.VERSION_17
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    compileJava {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+        options.compilerArgs.addAll(['--add-exports', 'java.base/java.lang.reflect=ALL-UNNAMED'])
+        options.compilerArgs.addAll(['--add-exports', 'java.base/java.net=ALL-UNNAMED'])
+        options.compilerArgs.addAll(['--add-exports', 'java.base/sun.nio.ch=ALL-UNNAMED'])
+        options.compilerArgs.addAll(['--add-exports', 'jdk.unsupported/sun.misc=ALL-UNNAMED'])
+        options.encoding = 'UTF-8'
+        options.deprecation = true
+    }
+
+    compileTestJava {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+        options.compilerArgs.addAll(['--add-exports', 'java.base/java.lang.reflect=ALL-UNNAMED'])
+        options.compilerArgs.addAll(['--add-exports', 'java.base/java.net=ALL-UNNAMED'])
+        options.compilerArgs.addAll(['--add-exports', 'java.base/sun.nio.ch=ALL-UNNAMED'])
+        options.compilerArgs.addAll(['--add-exports', 'jdk.unsupported/sun.misc=ALL-UNNAMED'])
+        options.encoding = 'UTF-8'
+        options.deprecation = true
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        // implementation
+        implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.11'
+        implementation group: 'com.datadoghq', name: 'java-dogstatsd-client', version: '4.0.0'
+        implementation group: 'com.dslplatform', name: 'dsl-json-java8', version: versions.dslJson
+        implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.13.3'
+        implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
+        implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+        implementation group: 'io.netty', name: 'netty-all', version: versions.netty
+        implementation group: 'org.agrona', name: 'agrona', version: versions.agrona
+        implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+        annotationProcessor group: 'com.dslplatform', name: 'dsl-json-java8', version: versions.dslJson
+        // test
+        testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.2'
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.2'
+    }
+
+    test {
+        useJUnitPlatform()
+        jvmArgs('--add-opens', 'java.base/java.lang.reflect=ALL-UNNAMED')
+        jvmArgs('--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED')
+
+        testLogging {
+            showStandardStreams = true
+            exceptionFormat = 'full'
+        }
+    }
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
+}
+
+project('service') {
+    application.mainClass.set("com.skyscraper.Photon")
+    mainClassName = 'com.skyscraper.Photon'
+
+    apply plugin: 'java'
+    apply plugin: 'application'
+    apply plugin: 'io.freefair.lombok'
+
+}

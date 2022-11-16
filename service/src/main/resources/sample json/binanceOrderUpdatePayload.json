@@ -1,0 +1,23 @@
+{
+  "stream": "btcusdt@depth@100ms",
+  "data":
+  {
+    "e": "depthUpdate", // Event type
+    "E": 123456789,     // Event time
+    "s": "BTCUSD",      // Symbol
+    "U": 157,           // First update ID in event
+    "u": 160,           // Final update ID in event
+    "b": [              // Bids to be updated
+      [
+        "55100.0",      // Price level to be updated
+        "10"            // Quantity
+      ]
+    ],
+    "a": [              // Asks to be updated
+      [
+        "55100.01",     // Price level to be updated
+        "100"           // Quantity
+      ]
+    ]
+  }
+}

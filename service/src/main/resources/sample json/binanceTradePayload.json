@@ -1,0 +1,16 @@
+{
+  "stream": "btcusdt@trade",
+  "data": {
+    "e": "trade",     // Event type
+    "E": 123456789,   // Event time
+    "s": "BTCUSDT",    // Symbol
+    "t": 12345,       // Trade ID
+    "p": "55235.01",  // Price
+    "q": "100",       // Quantity
+    "b": 88,          // Buyer order ID
+    "a": 50,          // Seller order ID
+    "T": 123456785,   // Trade time
+    "m": true,        // Is the buyer the market maker?
+    "M": true         // Ignore
+  }
+}

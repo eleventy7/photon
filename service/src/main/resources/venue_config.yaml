@@ -1,0 +1,30 @@
+venueConfigs:
+  - venue: FTX
+    url: "wss://ftx.com/ws/"
+    apiKey: "asdf" # fill this out when auth is needed
+    secretKey: "qwer"
+    ccyPairToString:
+      BTCUSD: "BTC/USD"
+      BTCUSDT: "BTC/USDT"
+      ETHUSD: "ETH/USD"
+      ETHUSDT: "ETH/USDT"
+    fees:
+      makerFeeBp: 0.02
+      takerFeeBp: 0.07
+  - venue: Binance
+    url: "wss://stream.binance.com:9443/stream?streams="
+    ccyPairToString:
+      BTCUSDT: "btcusdt"
+      ETHUSDT: "ethusdt"
+    fees:
+      makerFeeBp: 0.1
+      takerFeeBp: 0.1
+  - venue: Coinbase
+    url: "wss://ws-feed.exchange.coinbase.com"
+    ccyPairToString:
+      BTCUSD: "BTC-USD"
+      ETHUSD: "ETH-USD"
+      USDUSDT: "USDT-USD"
+    fees:
+      makerFeeBp: 0.1
+      takerFeeBp: 0.1
